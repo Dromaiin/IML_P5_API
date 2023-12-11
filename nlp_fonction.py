@@ -4,7 +4,8 @@ import re
 import nltk
 from nltk import pos_tag
 from nltk.stem import WordNetLemmatizer
-from sentence_transformers import SentenceTransformer
+#from sentence_transformers import SentenceTransformer
+from sklearn.feature_extraction.text import TfidfVectorizer
 import wordninja
 import pickle
 import numpy as np
@@ -260,10 +261,13 @@ def predict_tags(titre, body):
     df_prep['body_clean'] = df_prep['body_clean'].apply(clean_data_sup_verbe)
     df_prep['title_bode_clean'] = df_prep['titre_clean']+df_prep['body_clean']
 
-    model = SentenceTransformer('all-MiniLM-L6-v2')
+   # model = SentenceTransformer('all-MiniLM-L6-v2')
 
-    sentences_test = df_prep['title_bode_clean'].tolist()  
-    embeddings_test_bert = model.encode(sentences_test, convert_to_tensor=True)
+   # sentences_test = df_prep['title_bode_clean'].tolist()  
+    #embeddings_test_bert = model.encode(sentences_test, convert_to_tensor=True)
+
+    title_tfidf_vector = TfidfVectorizer()
+    embeddings_test_bert = title_tfidf_vector.fit_transform(df_prep['title_bode_clean'])
 
 
 
